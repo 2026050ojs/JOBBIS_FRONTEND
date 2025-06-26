@@ -1,28 +1,37 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-background">
-    <header class="flex items-center p-4">
-      <img src="/favicon.ico" alt="로고" class="h-12 cursor-pointer" @click="goHome" />
-      <span class="ml-2 text-primary text-2xl font-bold">JOBBIS</span>
+  <div class="min-h-screen flex flex-col bg-background font-sans">
+    <header class="flex justify-end items-center p-8 md:h-24 w-full">
+      <span class="text-primary text-3xl font-bold tracking-tight select-none mr-4">JOBBIS</span>
+      <img src="/favicon.ico" alt="로고" class="h-16 cursor-pointer" @click="goHome" />
     </header>
-    <main class="flex flex-1 flex-col items-center justify-center">
-      <div class="bg-white rounded-lg shadow-md p-8 w-full max-w-2xl">
-        <h2 class="text-xl font-bold text-primary mb-4">검사 결과</h2>
-        <div v-if="user">
-          <div class="mb-2 text-gray-700">{{ user.name }}님, 검사 유형은 <span class="font-semibold text-primary">{{ resultType }}</span> 입니다.</div>
-        </div>
-        <div class="mb-6 text-gray-600">{{ resultDesc }}</div>
-        <h3 class="text-lg font-bold text-primary mb-2">추천 기업</h3>
-        <div v-for="(corp, idx) in companies" :key="corp.name" class="mb-2">
-          <button @click="toggle(idx)" class="w-full text-left px-4 py-2 bg-primary text-white rounded-t hover:bg-primary-light">
-            {{ corp.name }}
-          </button>
-          <div v-if="openIdx === idx" class="border border-t-0 rounded-b bg-gray-50 px-4 py-2">
-            <div><b>업종:</b> {{ corp.type }}</div>
-            <div><b>설명:</b> {{ corp.desc }}</div>
-            <div><b>위치:</b> {{ corp.location }}</div>
+    <main class="flex flex-1 flex-col items-center justify-center w-full">
+      <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl p-16 flex flex-col md:flex-row gap-16 items-center">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="result" class="rounded-2xl w-[360px] h-[360px] object-cover hidden md:block" />
+        <div class="flex-1 flex flex-col items-center">
+          <h2 class="text-4xl md:text-5xl font-bold text-primary mb-10 text-center">검사 결과</h2>
+          <div v-if="user">
+            <div class="mb-4 text-2xl text-gray-700 text-center">{{ user.name || '사용자' }}님의 검사 유형은 <span class="font-semibold text-primary">{{ resultType }}</span> 입니다.</div>
+          </div>
+          <div class="mb-8 text-xl text-gray-600 text-center">{{ resultDesc }}</div>
+          <h3 class="text-2xl font-bold text-primary mb-4">추천 기업</h3>
+          <div v-for="(corp, idx) in companies" :key="corp.name" class="mb-4 w-full">
+            <button @click="toggle(idx)" class="w-full text-left px-6 py-4 bg-primary text-white rounded-t-xl text-xl font-bold hover:bg-primary-light">
+              {{ corp.name }}
+            </button>
+            <div v-if="openIdx === idx" class="border border-t-0 rounded-b-xl bg-gray-50 px-6 py-4 text-lg">
+              <div><b>업종:</b> {{ corp.type }}</div>
+              <div><b>설명:</b> {{ corp.desc }}</div>
+              <div><b>위치:</b> {{ corp.location }}</div>
+            </div>
+          </div>
+          <div class="flex flex-col md:flex-row gap-4 mt-10 w-full justify-center items-center">
+            <button @click="shareResult" class="px-10 py-4 bg-primary text-white rounded-xl text-2xl font-bold hover:bg-primary-light transition">공유하기</button>
+            <form @submit.prevent="sendEmail" class="flex gap-2 items-center">
+              <input v-model="email" type="email" required placeholder="이메일 입력" class="border rounded-xl px-4 py-3 text-xl focus:outline-none focus:ring-2 focus:ring-primary-light" />
+              <button type="submit" class="bg-primary text-white py-3 px-6 rounded-xl text-xl font-bold hover:bg-primary-light transition">이메일로 받기</button>
+            </form>
           </div>
         </div>
-        <button @click="loadPrev" class="mt-6 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">이전 검사 결과 불러오기</button>
       </div>
     </main>
   </div>
@@ -42,7 +51,7 @@ const router = useRouter()
 function goHome() {
   router.push('/')
 }
-const user = ref(null)
+const user = ref({})
 const answers = ref([])
 const resultType = ref('분석형')
 const resultDesc = ref('분석형은 논리적이고 체계적인 업무에 강점을 보입니다.')
@@ -52,8 +61,23 @@ const companies = ref([
   { name: '현대자동차', type: '제조/자동차', desc: '글로벌 자동차 기업', location: '서울' },
 ])
 const openIdx = ref(null)
+const email = ref('')
 function toggle(idx) {
   openIdx.value = openIdx.value === idx ? null : idx
+}
+function shareResult() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'JOBBIS 검사 결과',
+      text: '나의 JOBBIS 검사 결과를 확인해보세요!',
+      url: window.location.href
+    })
+  } else {
+    alert('공유 기능을 지원하지 않는 브라우저입니다.')
+  }
+}
+function sendEmail() {
+  window.location.href = `mailto:${email.value}?subject=JOBBIS 검사 결과&body=아래는 나의 JOBBIS 검사 결과입니다.\n유형: ${resultType.value}\n설명: ${resultDesc.value}`
 }
 function loadPrev() {
   const prev = localStorage.getItem('user')
@@ -61,9 +85,14 @@ function loadPrev() {
   if (prev && prevAns) {
     user.value = simpleDecrypt(prev)
     answers.value = JSON.parse(prevAns)
-    // 실제로는 answers에 따라 resultType/resultDesc/companies를 동적으로 계산해야 함
   }
 }
-// 최초 진입 시 현재 검사 결과 불러오기
 loadPrev()
-</script> 
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=SUIT:wght@400;700;900&family=Noto+Sans+KR:wght@400;700&display=swap');
+.font-sans {
+  font-family: 'SUIT', 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', Arial, sans-serif;
+}
+</style> 
