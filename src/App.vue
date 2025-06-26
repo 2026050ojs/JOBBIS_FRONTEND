@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter, RouterView } from 'vue-router'
+import DarkModeToggle from './components/DarkModeToggle.vue'
 const router = useRouter()
 function goHome() {
   router.push('/')
@@ -17,6 +18,9 @@ function goHome() {
         <RouterView />
       </div>
     </main>
+    <div class="fixed top-4 right-4 z-50">
+      <DarkModeToggle />
+    </div>
   </div>
 </template>
 

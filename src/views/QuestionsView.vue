@@ -16,7 +16,7 @@
             <div v-if="currentQuestion.type === 'choice'" class="space-y-4 w-full">
               <button v-for="(opt, idx) in currentQuestion.options" :key="idx" @click="selectAnswer(opt)"
                 :class="['w-full py-5 rounded-xl border text-2xl font-semibold', answers[currentIndex] === opt ? 'bg-primary text-white' : 'bg-gray-100']">
-                {{ opt }}
+                {{ opt.text }}
               </button>
             </div>
             <div v-else>
@@ -49,10 +49,37 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
+const types = ['분석형', '창의형', '리더형', '실무형']
 const questions = [
-  { text: '당신이 가장 선호하는 업무 환경은 무엇인가요?', type: 'choice', options: ['조용한 환경', '활발한 환경', '유연한 환경', '체계적인 환경'] },
-  { text: '새로운 기술이나 정보를 배우는 것을 즐기시나요?', type: 'choice', options: ['매우 그렇다', '보통이다', '그렇지 않다'] },
-  { text: '팀 프로젝트에서 주로 맡는 역할은?', type: 'choice', options: ['리더', '서포터', '아이디어 제안자', '실행가'] },
+  {
+    text: '당신이 가장 선호하는 업무 환경은 무엇인가요?',
+    type: 'choice',
+    options: [
+      { text: '조용한 환경', scores: { 분석형: 2, 창의형: 0, 리더형: 0, 실무형: 1 } },
+      { text: '활발한 환경', scores: { 분석형: 0, 창의형: 1, 리더형: 2, 실무형: 0 } },
+      { text: '유연한 환경', scores: { 분석형: 0, 창의형: 2, 리더형: 0, 실무형: 1 } },
+      { text: '체계적인 환경', scores: { 분석형: 2, 창의형: 0, 리더형: 0, 실무형: 1 } },
+    ]
+  },
+  {
+    text: '새로운 기술이나 정보를 배우는 것을 즐기시나요?',
+    type: 'choice',
+    options: [
+      { text: '매우 그렇다', scores: { 분석형: 1, 창의형: 2, 리더형: 0, 실무형: 1 } },
+      { text: '보통이다', scores: { 분석형: 1, 창의형: 1, 리더형: 1, 실무형: 1 } },
+      { text: '그렇지 않다', scores: { 분석형: 0, 창의형: 0, 리더형: 1, 실무형: 2 } },
+    ]
+  },
+  {
+    text: '팀 프로젝트에서 주로 맡는 역할은?',
+    type: 'choice',
+    options: [
+      { text: '리더', scores: { 분석형: 0, 창의형: 0, 리더형: 2, 실무형: 1 } },
+      { text: '서포터', scores: { 분석형: 1, 창의형: 0, 리더형: 0, 실무형: 2 } },
+      { text: '아이디어 제안자', scores: { 분석형: 0, 창의형: 2, 리더형: 1, 실무형: 0 } },
+      { text: '실행가', scores: { 분석형: 1, 창의형: 0, 리더형: 0, 실무형: 2 } },
+    ]
+  },
   { text: '문제가 발생했을 때 어떻게 해결하나요?', type: 'choice', options: ['직접 해결', '팀원과 상의', '외부 도움 요청', '문제 분석 후 해결'] },
   { text: '가장 자신 있는 역량은 무엇인가요?', type: 'text' },
   { text: '업무에서 가장 중요하게 생각하는 가치는?', type: 'choice', options: ['창의성', '효율성', '협업', '정확성'] },
@@ -73,6 +100,7 @@ const questions = [
 ]
 const currentIndex = ref(0)
 const answers = ref([])
+const typeScores = ref({ 분석형: 0, 창의형: 0, 리더형: 0, 실무형: 0 })
 const showWarning = ref(false)
 const loading = ref(false)
 const currentQuestion = computed(() => questions[currentIndex.value])
@@ -88,6 +116,13 @@ function next() {
     showWarning.value = true
     return
   }
+  // 유형별 점수 누적
+  const q = questions[currentIndex.value]
+  if (q.type === 'choice' && typeof answers.value[currentIndex.value] === 'object' && answers.value[currentIndex.value].scores) {
+    for (const t of types) {
+      typeScores.value[t] += answers.value[currentIndex.value].scores[t] || 0
+    }
+  }
   showWarning.value = false
   if (currentIndex.value < questions.length - 1) {
     currentIndex.value++
@@ -95,6 +130,7 @@ function next() {
     loading.value = true
     setTimeout(() => {
       localStorage.setItem('answers', JSON.stringify(answers.value))
+      localStorage.setItem('typeScores', JSON.stringify(typeScores.value))
       loading.value = false
       router.push('/result')
     }, 2000)
