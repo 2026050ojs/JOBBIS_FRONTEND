@@ -1,8 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col bg-background">
-    <header class="flex items-center p-4">
-      <img src="/favicon.ico" alt="로고" class="h-12 cursor-pointer" @click="goHome" />
-      <span class="ml-2 text-primary text-2xl font-bold">JOBBIS</span>
+    <header class="flex items-center p-6 md:p-10 md:h-28">
+      <img src="/jobbis_logo_fin.png" alt="JOBBIS 로고" class="h-40 w-40 cursor-pointer hover:scale-105 transition-transform duration-200" @click="goHome" />
     </header>
     <main class="flex flex-1 flex-col items-center justify-center">
       <div class="bg-white rounded-lg shadow-md p-8 w-full max-w-md">

@@ -9,9 +9,8 @@ function goHome() {
 
 <template>
   <div class="min-h-screen bg-background font-sans">
-    <header class="flex items-center p-4 md:p-8 md:h-24">
-      <img src="/favicon.ico" alt="로고" class="h-12 md:h-16 cursor-pointer" @click="goHome" />
-      <span class="ml-2 text-primary text-2xl md:text-3xl font-bold tracking-tight select-none">JOBBIS</span>
+    <header class="flex items-center p-6 md:p-10 md:h-28">
+      <img src="/jobbis_logo_fin.png" alt="JOBBIS 로고" class="h-20 w-40 cursor-pointer hover:scale-105 transition-transform duration-200" @click="goHome" />
     </header>
     <main class="w-full flex justify-center">
       <div class="max-w-6xl w-full px-4">
