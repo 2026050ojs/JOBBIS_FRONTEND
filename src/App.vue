@@ -14,7 +14,7 @@ function goHome() {
       <span class="ml-2 text-primary text-2xl md:text-3xl font-bold tracking-tight select-none">JOBBIS</span>
     </header>
     <main class="flex justify-center items-start md:items-center w-full min-h-[80vh]">
-      <div class="w-full max-w-2xl px-2 md:px-0">
+      <div class="border rounded-md p-4 w-full mx-auto max-w-2xl">
         <RouterView />
       </div>
     </main>
