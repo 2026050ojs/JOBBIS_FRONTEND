@@ -79,7 +79,7 @@ const removeSearch = (idx) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 40vh;
+  min-height: 20vh;
   padding: 2rem;
 }
 
@@ -106,12 +106,12 @@ const removeSearch = (idx) => {
 }
 
 .search-input {
-  flex: 2;
-  min-width: 500px;
-  padding: 30px 40px;
+  flex: 1;
+  min-width: 600px;
+  padding: 20px 24px;
   border: none;
   outline: none;
-  font-size: 14px;
+  font-size: 16px;
   background: transparent;
   color: #222;
   border-top-left-radius: 50px;
@@ -127,7 +127,7 @@ const removeSearch = (idx) => {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-left: 4px solid #667eea;
-  padding: 30px 38px;
+  padding: 20px 28px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;

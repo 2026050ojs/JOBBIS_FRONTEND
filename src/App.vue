@@ -8,8 +8,8 @@ function goHome() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background font-sans">
-    <header class="flex items-center p-6 md:p-10 md:h-28">
+  <div class="min-h-screen bg-background dark:bg-gray-900 font-sans">
+    <header class="flex items-center p-6 md:p-10 md:h-28 bg-white dark:bg-gray-950">
       <img src="/jobbis_logo_fin.png" alt="JOBBIS 로고" class="h-20 w-40 cursor-pointer hover:scale-105 transition-transform duration-200" @click="goHome" />
     </header>
     <main class="w-full flex justify-center">
