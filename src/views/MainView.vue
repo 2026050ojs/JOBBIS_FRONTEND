@@ -1,5 +1,9 @@
 <template>
-  <div class="min-h-[80vh] flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden">
+  <div class="min-h-[80vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-0">
+    <!-- 검색바 추가 -->
+    <div class="w-full flex justify-center mb-8 z-10">
+      <CompanySearchBar />
+    </div>
     <!-- 물결 애니메이션 오버레이 -->
     <div 
       v-if="showWaveAnimation" 
@@ -56,6 +60,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import CompanySearchBar from '../components/CompanySearchBar.vue'
 
 const router = useRouter()
 const isLoading = ref(false)
