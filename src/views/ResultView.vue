@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100 px-4">
-    <div class="w-full max-w-3xl bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 animate-fade-in">
+  <div class="min-h-[80vh] flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100">
+    <div class="w-full max-w-4xl bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 animate-fade-in">
       <div class="flex flex-col md:flex-row items-start gap-6">
         <img 
           src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" 

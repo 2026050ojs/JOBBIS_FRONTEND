@@ -13,8 +13,8 @@ function goHome() {
       <img src="/favicon.ico" alt="로고" class="h-12 md:h-16 cursor-pointer" @click="goHome" />
       <span class="ml-2 text-primary text-2xl md:text-3xl font-bold tracking-tight select-none">JOBBIS</span>
     </header>
-    <main class="flex justify-center items-start md:items-center w-full min-h-[80vh]">
-      <div class="border rounded-md p-4 w-full mx-auto max-w-2xl">
+    <main class="w-full flex justify-center">
+      <div class="max-w-6xl w-full px-4">
         <RouterView />
       </div>
     </main>

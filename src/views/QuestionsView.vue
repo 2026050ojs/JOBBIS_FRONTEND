@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100 px-4">
-    <div class="w-full max-w-3xl bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 animate-fade-in">
+  <div class="min-h-[80vh] flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative">
+    <div class="w-full max-w-4xl bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 animate-fade-in">
       <div class="flex flex-col md:flex-row items-start gap-6">
         <img 
           src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80" 
@@ -38,6 +38,49 @@
         </div>
       </div>
     </div>
+    
+    <!-- Apple 스타일 진행 상황 바 -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-gray-200 dark:border-gray-700">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-600 dark:text-gray-400">
+            진행률: {{ Math.round((currentIndex + 1) / questions.length * 100) }}%
+          </span>
+          <span class="text-sm font-medium text-gray-600 dark:text-gray-400">
+            {{ currentIndex + 1 }} / {{ questions.length }}
+          </span>
+        </div>
+        
+        <!-- 진행 바 컨테이너 -->
+        <div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <!-- 배경 그라데이션 -->
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-full"></div>
+          
+          <!-- 진행 바 -->
+          <div 
+            class="h-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out shadow-lg"
+            :style="{ width: `${(currentIndex + 1) / questions.length * 100}%` }"
+          >
+            <!-- 빛나는 효과 -->
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+          </div>
+          
+          <!-- 진행 바 끝부분 하이라이트 -->
+          <div 
+            class="absolute top-0 right-0 h-full w-1 bg-white/60 rounded-full shadow-lg"
+            :style="{ right: `${100 - (currentIndex + 1) / questions.length * 100}%` }"
+          ></div>
+        </div>
+        
+        <!-- 질문 번호 표시 -->
+        <div class="flex justify-between mt-2">
+          <span class="text-xs text-gray-500 dark:text-gray-400">시작</span>
+          <span class="text-xs text-blue-600 dark:text-blue-400 font-medium">Q{{ currentIndex + 1 }}</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">완료</span>
+        </div>
+      </div>
+    </div>
+    
     <div v-if="loading" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div class="card p-10 flex flex-col items-center animate-fade-in">
         <svg class="animate-spin h-16 w-16 text-blue-600 mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -220,5 +263,19 @@ function prev() {
 @import url('https://fonts.googleapis.com/css2?family=SUIT:wght@400;700;900&family=Noto+Sans+KR:wght@400;700&display=swap');
 .font-sans {
   font-family: 'SUIT', 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', Arial, sans-serif;
+}
+
+/* 빛나는 효과 애니메이션 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
 </style> 

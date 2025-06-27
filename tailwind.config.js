@@ -25,6 +25,7 @@ module.exports = {
         'wave-move': 'waveMove 3s ease-in-out',
         'wave-up-down': 'waveUpDown 4s ease-in-out',
         'border-glow': 'borderGlow 2s linear infinite',
+        'shimmer': 'shimmer 2s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -72,6 +73,10 @@ module.exports = {
         borderGlow: {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
     },

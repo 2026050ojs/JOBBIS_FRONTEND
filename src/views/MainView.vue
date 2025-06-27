@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100 px-4 relative overflow-hidden">
+  <div class="min-h-[80vh] flex items-center justify-center bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden">
     <!-- 물결 애니메이션 오버레이 -->
     <div 
       v-if="showWaveAnimation" 
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="w-full max-w-3xl bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
+    <div class="w-full max-w-4xl bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
       <img
         src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
         alt="intro"
