@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[80vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-0">
+  <div class="min-h-[70vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-0">
     <!-- 검색바 추가 -->
     <div class="w-full flex justify-center mb-8 z-10">
       <CompanySearchBar />
