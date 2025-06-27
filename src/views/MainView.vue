@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[80vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-16">
+  <div class="min-h-[80vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-0">
     <!-- 검색바 추가 -->
     <div class="w-full flex justify-center mb-8 z-10">
       <CompanySearchBar />
@@ -104,7 +104,7 @@ function startTest() {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #1e40af 100%);
   transform: translateY(-2px) scale(1.04);
 }
 
