@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[80vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-0">
+  <div class="min-h-[80vh] flex flex-col items-center justify-start bg-background font-sans dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden pt-16">
     <!-- 검색바 추가 -->
     <div class="w-full flex justify-center mb-8 z-10">
       <CompanySearchBar />
@@ -89,6 +89,23 @@ function startTest() {
 
 .font-sans {
   font-family: 'SUIT', 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', Arial, sans-serif;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* 물결 애니메이션 컨테이너 */

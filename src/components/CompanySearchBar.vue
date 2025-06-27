@@ -17,44 +17,60 @@
       </div>
       
       <div class="search-examples">
-        <span class="example-label">검색 예시:</span>
-        <button 
-          v-for="example in searchExamples" 
-          :key="example"
-          @click="searchQuery = example"
-          class="example-tag"
-        >
-          {{ example }}
-        </button>
+        <span class="example-label">최근 검색:</span>
+        <template v-if="recentSearches.length > 0">
+          <span v-for="(item, idx) in recentSearches" :key="item" class="recent-tag-wrapper">
+            <button @click="searchQuery = item" class="example-tag">{{ item }}</button>
+            <button @click="removeSearch(idx)" class="remove-tag" aria-label="삭제">
+              ×
+            </button>
+          </span>
+        </template>
+        <template v-else>
+          <span class="no-history">검색 기록이 없습니다.</span>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 const searchQuery = ref('')
-const searchExamples = [
-  '개발자',
-  '마케팅',
-  '삼성전자',
-  '네이버',
-  '서울',
-  '부산',
-  'IT업계',
-  '금융업'
-]
+const recentSearches = ref([])
+const STORAGE_KEY = 'jobbis_recent_searches'
+
+// 기록 불러오기
+onMounted(() => {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved) {
+    try {
+      recentSearches.value = JSON.parse(saved)
+    } catch {}
+  }
+})
+
+// 기록 저장
+watch(recentSearches, (val) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(val))
+}, { deep: true })
 
 const handleSearch = () => {
-  if (!searchQuery.value.trim()) return
-  
+  const query = searchQuery.value.trim()
+  if (!query) return
+
+  // 기록에 추가 (중복 제거, 최신순)
+  recentSearches.value = [query, ...recentSearches.value.filter(item => item !== query)].slice(0, 10)
+
   // 실제 기업 정보 사이트로 이동
-  // 여기서는 예시로 잡코리아 검색 페이지로 이동
-  const encodedQuery = encodeURIComponent(searchQuery.value)
+  const encodedQuery = encodeURIComponent(query)
   const searchUrl = `https://www.jobkorea.co.kr/Search/?stext=${encodedQuery}`
-  
   window.open(searchUrl, '_blank')
+}
+
+const removeSearch = (idx) => {
+  recentSearches.value.splice(idx, 1)
 }
 </script>
 
@@ -97,6 +113,8 @@ const handleSearch = () => {
   font-size: 16px;
   background: transparent;
   color: #222;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
 }
 
 .search-input::placeholder {
@@ -107,16 +125,20 @@ const handleSearch = () => {
 .search-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
+  border-left: 4px solid #667eea;
   padding: 20px 28px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
 .search-button:hover {
   background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  border-left: 4px solid #5a6fd8;
   transform: scale(1.05);
 }
 
@@ -142,6 +164,13 @@ const handleSearch = () => {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+.recent-tag-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
 .example-tag {
   background: rgba(255, 255, 255, 0.2);
   border: 2px solid #888;
@@ -160,6 +189,27 @@ const handleSearch = () => {
   border-color: #222;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.remove-tag {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 18px;
+  margin-left: 2px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.remove-tag:hover {
+  color: #e53e3e;
+}
+
+.no-history {
+  color: #aaa;
+  font-size: 13px;
+  margin-left: 8px;
 }
 
 @media (max-width: 768px) {
