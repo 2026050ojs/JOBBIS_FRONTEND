@@ -36,22 +36,30 @@
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 leading-snug">
           나에게 꼭 맞는 기업, <span class="text-blue-600 dark:text-blue-400">JOBBIS</span>에서 찾아보세요!
         </h1>
-        <button 
-          @click="startTest" 
-          class="btn-primary w-full md:w-auto relative overflow-hidden"
-          :disabled="isLoading || showWaveAnimation"
-        >
-          <span class="flex items-center justify-center gap-2 relative z-10">
-            <span v-if="!isLoading && !showWaveAnimation">적성검사 시작</span>
-            <span v-else-if="isLoading && !showWaveAnimation" class="flex items-center gap-2">
-              <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-              </svg>
-              시작 중...
+        <div class="flex flex-col md:flex-row gap-3">
+          <button 
+            @click="startTest" 
+            class="btn-primary relative overflow-hidden"
+            :disabled="isLoading || showWaveAnimation"
+          >
+            <span class="flex items-center justify-center gap-2 relative z-10">
+              <span v-if="!isLoading && !showWaveAnimation">적성검사 시작</span>
+              <span v-else-if="isLoading && !showWaveAnimation" class="flex items-center gap-2">
+                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                시작 중...
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+          <button 
+            @click="goToBackendStatus" 
+            class="btn-secondary relative overflow-hidden"
+          >
+            백엔드 상태 확인
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -82,6 +90,10 @@ function startTest() {
     router.push('/questions')
   }, 4000) // 물결 애니메이션 시간 (위로 올라가는 2초 + 내려오는 2초)
 }
+
+function goToBackendStatus() {
+  router.push('/backend-status')
+}
 </script>
 
 <style scoped>
@@ -105,6 +117,23 @@ function startTest() {
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #60a5fa 0%, #1e40af 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(107, 114, 128, 0.15);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
   transform: translateY(-2px) scale(1.04);
 }
 
